@@ -149,7 +149,7 @@ public class Table {
 			
 			System.out.print(p.getName() + " card value is " + pTotal);
 			//平手(1.banker>21, player>21 2.banker=player)
-			if((bTotal>21 && bTotal>21) || (bTotal == pTotal))
+			if((bTotal>21 && pTotal>21) || (bTotal == pTotal))
 			{
 				System.out.println(", chips have no change! The Chips now is: " + p.getCurrentChips());
 			}
