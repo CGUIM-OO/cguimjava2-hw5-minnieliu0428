@@ -39,6 +39,17 @@ public class Player extends Person {
 	 * 是否要牌
 	 * @return b  (要牌：true, 不要牌:false)
 	 */
+	public boolean hit_me(Table tbl) {
+		int total = getTotalValue();
+		if (total < 17)
+			return true;
+		else if (total == 17 && hasAce()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	/*
 	public boolean hit_me(Table table) {
 		boolean b;
 		//基本參考條件：16點以下要牌，17點以上不要牌
@@ -52,7 +63,7 @@ public class Player extends Person {
 			b = false;
 		}
 		return b;
-	}
+	}*/
 	
 	public int getCurrentChips() {
 		//回傳玩家現有籌碼

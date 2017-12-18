@@ -7,11 +7,6 @@ public class Table {
 	private Player[] allPlayer;   //所有的玩家
 	private Dealer dealer;        //莊家
 	private int[] pos_betArray;   //每個玩家在一局下的注
-	//private ArrayList<Card> playerCard;   //暫存玩家的卡
-	private ArrayList<Card> player1Card;  //玩家1的卡
-	private ArrayList<Card> player2Card;  //玩家2的卡
-	private ArrayList<Card> player3Card;  //玩家3的卡
-	private ArrayList<Card> player4Card;  //玩家4的卡
 	private ArrayList<Card> dealerCard;   //莊家的卡
 	
 	public Table(int nDeck) {
@@ -29,6 +24,10 @@ public class Table {
 	
 	public void set_dealer(Dealer d) {
 		dealer = d;
+	}
+	
+	public Dealer get_dealer() {
+		return dealer;
 	}
 	
 	public Card get_face_up_card_of_dealer() {
@@ -51,46 +50,21 @@ public class Table {
 	}
 	
 	private void distribute_cards_to_dealer_and_players() {
-		//playerCard=new ArrayList<Card>();
-		player1Card=new ArrayList<Card>();
-		player2Card=new ArrayList<Card>();
-		player3Card=new ArrayList<Card>();
-		player4Card=new ArrayList<Card>();
 		dealerCard=new ArrayList<Card>();
 		
-		/*for(int j = 0; j < allPlayer.length; j++)
-		{
-			for(int i = 0; i <= 2; i++)
-			{		
-				playerCard.add(allCards.getOneCard(true));				
+		//發牌給玩家（兩開）
+		for(int j = 0; j < allPlayer.length; j++)
+		{	
+			if(allPlayer[j]!=null && pos_betArray[j]!=0)
+			{
+				ArrayList<Card> playerCard=new ArrayList<Card>();
+				playerCard.add(allCards.getOneCard(true));	
+				playerCard.add(allCards.getOneCard(true));
+				allPlayer[j].setOneRoundCard(playerCard);
 			}
-			playerCard.add(allCards.getOneCard(false));
-			allPlayer[j].setOneRoundCard(playerCard);
-			playerCard.clear();
-		}*/
-			
-		//發牌給玩家（兩開一蓋）
-		player1Card.add(allCards.getOneCard(true));
-		player1Card.add(allCards.getOneCard(true));
-		player1Card.add(allCards.getOneCard(false));
-		allPlayer[0].setOneRoundCard(player1Card);
+		}
 		
-		player2Card.add(allCards.getOneCard(true));
-		player2Card.add(allCards.getOneCard(true));
-		player2Card.add(allCards.getOneCard(false));
-		allPlayer[1].setOneRoundCard(player2Card);
-		
-		player3Card.add(allCards.getOneCard(true));
-		player3Card.add(allCards.getOneCard(true));
-		player3Card.add(allCards.getOneCard(false));
-		allPlayer[2].setOneRoundCard(player3Card);
-		
-		player4Card.add(allCards.getOneCard(true));
-		player4Card.add(allCards.getOneCard(true));
-		player4Card.add(allCards.getOneCard(false));
-		allPlayer[3].setOneRoundCard(player4Card);
-		
-		//發牌給莊家（一開）
+		//發牌給莊家（一蓋一開）
 		dealerCard.add(allCards.getOneCard(false));
 		dealerCard.add(allCards.getOneCard(true));
 		dealer.setOneRoundCard(dealerCard);
@@ -102,115 +76,20 @@ public class Table {
 	private void ask_each_player_about_hits() {
 		boolean hit = false;
 		
-		do 
-		{
-			//判斷牌有沒有爆
-			if(allPlayer[0].getTotalValue()<=21) 
-			{
-				hit = allPlayer[0].hit_me(this);
-				if(hit) 
-				{
-					player1Card = allPlayer[0].getOneRoundCard();
-					player1Card.add(allCards.getOneCard(true));
-					allPlayer[0].setOneRoundCard(player1Card);
-					System.out.print("Hit! ");
-					System.out.println(allPlayer[0].getName() + "'s cards now:");
-					allPlayer[0].printAllCard();
-				}
-				else {
-					System.out.println(allPlayer[0].getName() + " Pass hit!");
-				}
-			}
-			else {
-				hit = false;   //break;
-			}
-			
-		}while(hit);
-		hit = false;
-		do 
-		{
-			if(allPlayer[1].getTotalValue()<=21) 
-			{
-				hit = allPlayer[1].hit_me(this);
-				if(hit) 
-				{
-					player2Card = allPlayer[1].getOneRoundCard();
-					player2Card.add(allCards.getOneCard(true));
-					allPlayer[1].setOneRoundCard(player2Card);
-					System.out.print("Hit! ");
-					System.out.println(allPlayer[1].getName() + "'s cards now:");
-					allPlayer[1].printAllCard();
-				}
-				else {
-					System.out.println(allPlayer[1].getName() + " Pass hit!");
-				}
-			}
-			else {
-				hit = false;
-			}
-			
-		}while(hit);
-		hit = false;
-		do 
-		{
-			if(allPlayer[2].getTotalValue()<=21) 
-			{
-				hit = allPlayer[2].hit_me(this);
-				if(hit) 
-				{
-					player3Card = allPlayer[2].getOneRoundCard();
-					player3Card.add(allCards.getOneCard(true));
-					allPlayer[2].setOneRoundCard(player3Card);
-					System.out.print("Hit! ");
-					System.out.println(allPlayer[2].getName() + "'s cards now:");
-					allPlayer[2].printAllCard();
-				}
-				else {
-					System.out.println(allPlayer[2].getName() + " Pass hit!");
-				}
-			}
-			else {
-				hit = false;
-			}
-			
-		}while(hit);
-		hit = false;
-		do 
-		{
-			if(allPlayer[3].getTotalValue()<=21) 
-			{
-				hit = allPlayer[3].hit_me(this);
-				if(hit) 
-				{
-					player4Card = allPlayer[3].getOneRoundCard();
-					player4Card.add(allCards.getOneCard(true));
-					allPlayer[3].setOneRoundCard(player4Card);
-					System.out.print("Hit! ");
-					System.out.println(allPlayer[3].getName() + "'s cards now:");
-					allPlayer[3].printAllCard();
-				}
-				else {
-					System.out.println(allPlayer[3].getName() + " Pass hit!");
-				}
-			}
-			else {
-				hit = false;
-			}
-			
-		}while(hit);
-		/*
 		for(Player p : allPlayer)
 		{
 			do 
 			{
+				//牌爆掉就不要要牌
 				if(p.getTotalValue()<=21) 
 				{
 					hit = p.hit_me(this);
 					if(hit) 
 					{
-						playerCard = p.getOneRoundCard();
-						playerCard.add(allCards.getOneCard(true));
-						p.setOneRoundCard(playerCard);
+						ArrayList<Card> playersCard=new ArrayList<Card>();
+						playersCard = p.getOneRoundCard();
+						playersCard.add(allCards.getOneCard(true));
+						p.setOneRoundCard(playersCard);
 						System.out.print("Hit! ");
 						System.out.println(p.getName() + "'s cards now:");
 						p.printAllCard();
@@ -224,14 +103,36 @@ public class Table {
 				}
 				
 			}while(hit);
-			playerCard.clear();
+			System.out.println(p.getName() + " Final Card:");
+			p.printAllCard();
 			hit = false;
-		}*/	
+		}
 	}
 	
 	//詢問莊家是否要牌
 	private void ask_dealer_about_hits() {
-		dealer.hit_me(this);	
+		boolean hit = false;
+
+		do 
+		{
+			if(dealer.getTotalValue()<=21) 
+			{
+				hit = dealer.hit_me(this);	
+				if(hit) 
+				{
+					dealerCard.add(allCards.getOneCard(true));
+					dealer.setOneRoundCard(dealerCard);
+				}
+				else {
+					hit = false;
+				}
+			}
+			else {
+				hit = false;
+			}
+			
+		}while(hit);
+		hit = false;
 		System.out.println("Dealer's hit is over!");
 	}
 	
@@ -240,6 +141,7 @@ public class Table {
 		int bTotal = dealer.getTotalValue();
 		System.out.println("Dealer's card value is "+ bTotal + ", Cards:");
 		dealer.printAllCard();
+		
 		for(int i = 0; i < allPlayer.length;i++)
 		{
 			int pTotal = allPlayer[i].getTotalValue();
